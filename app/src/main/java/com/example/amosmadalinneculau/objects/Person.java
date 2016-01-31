@@ -1,5 +1,6 @@
 package com.example.amosmadalinneculau.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -21,26 +22,38 @@ public class Person {
     private String name;
     private String password;
     private Date dateOfBirth;
-    private boolean isMale;
+    private Gender gender;
+    //Interests
+    private ArrayList<Interest> interests = new ArrayList<>();
+    public ArrayList<Interest> getInterests(){
+        return interests;
+    }
+    public Interest getInterestByID(int id){
+        return interests.get(id);
+    }
+    public void addInterest(Interest interest){
+        interests.add(interest);
+    }
+
 
     //PERSON CONSTRUCTOR
-    public Person(String email, String name, String password, int year, int month, int day, boolean isMale){
+    public Person(String email, String name, String password, int year, int month, int day, Gender gender){
 
         this.email = email;
         this.name = name;
         this.password = password;
-        this.isMale = isMale;
+        this.gender = gender;
 
         dateOfBirth = new Date(year, month, day);
     }
 
     //PERSON CONSTRUCTOR WITHOUT DATE
-    public Person(String email, String name, String password, boolean isMale){
+    public Person(String email, String name, String password, Gender gender){
 
         this.email = email;
         this.name = name;
         this.password = password;
-        this.isMale = isMale;
+        this.gender = gender;
 
     }
 
@@ -104,10 +117,10 @@ public class Person {
     /*
     Change the gender. Return the old gender.
      */
-    public boolean setGender(boolean newGender){
-        boolean oldGender;
-        oldGender = isMale;
-        isMale = newGender;
+    public Gender setGender(Gender newGender){
+        Gender oldGender;
+        oldGender = gender;
+        gender = newGender;
 
         return oldGender;
     }
