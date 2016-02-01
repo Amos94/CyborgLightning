@@ -13,7 +13,7 @@ public class Interest {
         this.interest_name = interest_name;
         this.interest_description = interest_description;
     }
-
+    public Interest(){}
 
     //Setters
     //Type
