@@ -6,17 +6,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
+import java.sql.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button login_button;
-    Button register_button;
-    Button info_button;
+    //U.I. Elements
+    protected Button login_button;
+    protected Button register_button;
+    protected Button info_button;
 
+    protected EditText email;
+    protected EditText password;
 
 
     @Override
@@ -35,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+        email = (EditText) findViewById(R.id.user_email);
+        password = (EditText) findViewById(R.id.password_textfield);
+
     }
 
 
@@ -67,4 +77,37 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
+
+    /*
+    Intent for Login
+    Verify if the email and password works/ exists
+     */
+    public void goToMainScreen(View view){
+        //to be done when I integrate with Simeon for DATABASES
+        //really easy. search in the table
+        //if ok then go to main screen
+        //if not search if the eamil exists
+        //if so -> problem with password
+        //else suggest to register
+    }
+
+    public void continueRegistration(View view){
+
+    }
+
+    /*
+    Get the input of user_email text field
+     */
+    public String getEmail(){
+        return email.getText().toString();
+    }
+
+    /*
+    Get the input of password text field
+     */
+    public String getPassword(){
+
+        return password.getText().toString();
+    }
+
 }
