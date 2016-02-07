@@ -45,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.user_email);
         password = (EditText) findViewById(R.id.password_textfield);
 
+        MySQLConnector connector = new MySQLConnector();
+
+        connector.sqlOpenConnection();
+
+        if(connector.getStatus() == "CONNECTED")
+            Log.i("Connection: ", "successful");
+        else Log.i("Connection: ","Couldn't establish the connection");
     }
 
 
@@ -89,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         //if not search if the eamil exists
         //if so -> problem with password
         //else suggest to register
+
+
     }
 
     public void continueRegistration(View view){
