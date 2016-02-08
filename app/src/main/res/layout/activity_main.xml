@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#7c8bff">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,17 +12,14 @@
             android:layout_width="match_parent"
             android:layout_height="416dp"
             android:weightSum="1"
-            android:background="#ffffff">
+            android:background="#3342b5">
 
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Please enter login email"
-                android:id="@+id/login_label"
-                android:textSize="25dp"
-                android:textAlignment="center"
-                android:textColor="#000000" />
+                android:id="@+id/login_label" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -31,18 +27,14 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/user_email"
-                android:textAlignment="center"
-                android:hint="Enter your email here" />
+                android:text="Enter your email here" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Please enter your password"
-                android:id="@+id/password_label"
-                android:textSize="25dp"
-                android:textAlignment="center"
-                android:textColor="#000000" />
+                android:id="@+id/password_label" />
 
             <EditText
                 android:layout_width="fill_parent"
@@ -50,8 +42,7 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/password_textfield"
-                android:hint="Enter your password here"
-                android:textAlignment="center" />
+                android:text="Enter your password here" />
 
         </LinearLayout>
 
@@ -59,7 +50,7 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff">
+            android:background="#3342b5">
 
             <Button
                 android:layout_width="wrap_content"
@@ -68,7 +59,7 @@
                 android:id="@+id/btnlogin"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
-                android:background="#ededed"
+                android:background="#4ce215"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
@@ -82,13 +73,12 @@
                 android:id="@+id/btnreg"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
-                android:background="#ededed"
+                android:background="#4ce215"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="5"
-                android:onClick="goToRegisterScreen" />
+                android:layout_weight="5" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -97,7 +87,7 @@
                 android:id="@+id/btninfo"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
-                android:background="#ededed"
+                android:background="#4ce215"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
