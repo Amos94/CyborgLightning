@@ -21,7 +21,7 @@ USE `projectrun` ;
 -- Table `projectrun`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`users` (
-  `email` TEXT NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `dob` DATE NOT NULL,
@@ -29,12 +29,14 @@ CREATE TABLE IF NOT EXISTS `projectrun`.`users` (
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
+ALTER TABLE `projectrun`.`users`
+ADD COLUMN `activated` TINYINT NOT NULL AFTER `gender`;
 
 -- -----------------------------------------------------
 -- Table `projectrun`.`friends`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`friends` (
-  `email` TEXT NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
   `prefferedName` VARCHAR(45) NOT NULL,
   `blocked` TINYINT(1) NOT NULL,
   PRIMARY KEY (`email`),
@@ -63,8 +65,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`interest` (
   `type` INT NOT NULL,
-  `name` TEXT NOT NULL,
-  `Other` TEXT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `Other` VARCHAR(45) NULL,
   PRIMARY KEY (`type`))
 ENGINE = InnoDB;
 
@@ -73,9 +75,9 @@ ENGINE = InnoDB;
 -- Table `projectrun`.`chat`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`chat` (
-  `messegeid` MEDIUMTEXT NOT NULL,
-  `emailfrom` TEXT NOT NULL,
-  `emailto` TEXT NOT NULL,
+  `messegeid` INT NOT NULL,
+  `emailfrom` VARCHAR(45) NOT NULL,
+  `emailto` VARCHAR(45) NOT NULL,
   `messege` LONGTEXT NOT NULL,
   `date` DATETIME NOT NULL,
   PRIMARY KEY (`messegeid`),
@@ -98,9 +100,9 @@ ENGINE = InnoDB;
 -- Table `projectrun`.`voip`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`voip` (
-  `callid` MEDIUMTEXT NOT NULL,
-  `emailfrom` TEXT NOT NULL,
-  `emailto` TEXT NOT NULL,
+  `callid` INT NOT NULL,
+  `emailfrom` VARCHAR(45) NOT NULL,
+  `emailto` VARCHAR(45) NOT NULL,
   `missed` TINYINT(1) NOT NULL,
   `rejected` TINYINT(1) NOT NULL,
   `start` DATETIME NOT NULL,
@@ -109,12 +111,12 @@ CREATE TABLE IF NOT EXISTS `projectrun`.`voip` (
   PRIMARY KEY (`callid`),
   INDEX `emailfrom_FK_idx` (`emailfrom` ASC),
   INDEX `emailto_FK_idx` (`emailto` ASC),
-  CONSTRAINT `emailfrom_FK`
+  CONSTRAINT `emailfromvoip_FK`
     FOREIGN KEY (`emailfrom`)
     REFERENCES `projectrun`.`users` (`email`)
     ON DELETE RESTRICT
     ON UPDATE CASCADE,
-  CONSTRAINT `emailto_FK`
+  CONSTRAINT `emailtovoip_FK`
     FOREIGN KEY (`emailto`)
     REFERENCES `projectrun`.`users` (`email`)
     ON DELETE RESTRICT
@@ -126,9 +128,9 @@ ENGINE = InnoDB;
 -- Table `projectrun`.`hasFriends`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `projectrun`.`hasFriends` (
-  `friendshipid` MEDIUMTEXT NOT NULL,
-  `email1` TEXT NOT NULL,
-  `email2` TEXT NOT NULL,
+  `friendshipid` INT NOT NULL,
+  `email1` VARCHAR(45) NOT NULL,
+  `email2` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`friendshipid`),
   INDEX `email1_FK_idx` (`email1` ASC),
   INDEX `email2_FK_idx` (`email2` ASC),
@@ -151,10 +153,10 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `projectrun`.`hasInterest` (
   `idhasInterest` INT NOT NULL,
   `idInterest` INT NOT NULL,
-  `email` TEXT NULL,
+  `email` VARCHAR(45) NULL,
   PRIMARY KEY (`idhasInterest`),
   INDEX `email_FK_idx` (`email` ASC),
-  CONSTRAINT `email_FK`
+  CONSTRAINT `emailInt_FK`
     FOREIGN KEY (`email`)
     REFERENCES `projectrun`.`users` (`email`)
     ON DELETE RESTRICT

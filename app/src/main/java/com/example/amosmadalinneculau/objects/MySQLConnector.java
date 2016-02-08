@@ -16,13 +16,13 @@ public class MySQLConnector {
 
     //EXTERNAL DATABASE
     //CONNECTION CREDENTIALS
-    protected static final String DB_URL="jdbc:mysql://localhost/cyborglightningschema?";
+    protected static final String DB_URL="jdbc:mysql://localhost:3306/projectrun";
     protected static final String USER="root";
-    protected static final String PASSWORD="Amos.expert94";
+    protected static final String PASSWORD="PASSWORD123";
     protected static final String PORT="3306";
 
     //CONNECTION AND STATEMENT
-    Connection connection;
+    public Connection connection;
     Statement statement;
 
     public MySQLConnector() {
@@ -38,6 +38,7 @@ public class MySQLConnector {
             System.out.println("--- TRYING TO CONNECT ---");
             Class.forName ("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL,USER,PASSWORD);
+
             System.out.println("--- CONNECTED ---");
             status = "CONNECTED";
         }

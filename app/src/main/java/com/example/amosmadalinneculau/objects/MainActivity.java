@@ -1,5 +1,8 @@
 package com.example.amosmadalinneculau.objects;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
     protected EditText email;
     protected EditText password;
 
+    //mysql connection
+    public MySQLConnector connector;
 
+    //dialog
+    public AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +52,25 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.user_email);
         password = (EditText) findViewById(R.id.password_textfield);
 
-        MySQLConnector connector = new MySQLConnector();
+        //mysql database
+        connector = new MySQLConnector();
 
         connector.sqlOpenConnection();
 
         if(connector.getStatus() == "CONNECTED")
             Log.i("Connection: ", "successful");
         else Log.i("Connection: ","Couldn't establish the connection");
-        //fixed bugs
+
+        //dialog for login
+        builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Couldn't login")
+                .setTitle("There was a problem with your email or password.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+            }
+        });
     }
 
 
@@ -98,7 +116,40 @@ public class MainActivity extends AppCompatActivity {
         //if so -> problem with password
         //else suggest to register
 
+        Intent intent = new Intent(this, MainMenu.class);
+        if(validLogin())
+            startActivity(intent);
+        else{
+            //dialog
+            builder.create();
+        }
 
+
+
+    }
+
+    public boolean validLogin(){
+        boolean toReturn = false;
+
+        try {
+            Statement statement = connector.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
+
+            while(resultSet.next()){
+                //read the data from database
+                //compare with the user input
+
+                if(resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()){
+                    toReturn = true;
+                    break;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toReturn;
     }
 
     public void continueRegistration(View view){
@@ -119,5 +170,6 @@ public class MainActivity extends AppCompatActivity {
 
         return password.getText().toString();
     }
+
 
 }
