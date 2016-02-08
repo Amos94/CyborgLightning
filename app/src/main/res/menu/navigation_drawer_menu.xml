@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:checked="true"
+            android:id="@+id/item_navigation_drawer_message"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="Message" />
+        <item
+            android:id="@+id/item_navigation_drawer_location"
+            android:icon="@drawable/ic_action_toggle_star"
+            android:title="Location" />
+        <item
+            android:id="@+id/item_navigation_drawer_voice_call"
+            android:icon="@drawable/ic_action_content_send"
+            android:title="Voice Call History" />
+        <item
+            android:id="@+id/item_navigation_drawer_chat_history"
+            android:icon="@drawable/ic_action_content_drafts"
+            android:title="Chat History" />
+    </group>
+
+    <item android:title="Personal Details">
+        <menu>
+            <item
+                android:id="@+id/item_navigation_drawer_settings"
+                android:icon="@drawable/ic_action_content_mail"
+                android:title="Settings" />
+            <item
+                android:id="@+id/item_navigation_drawer_help_and_feedback"
+                android:icon="@drawable/ic_action_action_delete"
+                android:title="Help and feedback" />
+        </menu>
+    </item>
+
+</menu>
