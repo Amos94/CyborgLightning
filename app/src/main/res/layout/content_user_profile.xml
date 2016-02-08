@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_drawer_layout"
+    android:background="@drawable/bluebackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/txtname"
+        android:hint="Name.."
+        android:layout_below="@+id/imageProfile"
+        android:layout_alignLeft="@+id/txtComfirmPassword"
+        android:layout_alignStart="@+id/txtComfirmPassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/txtpassword"
+        android:contentDescription="Password.."
+        android:hint="Password.."
+        android:layout_below="@+id/txtname"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/txtComfirmPassword"
+        android:contentDescription="Password.."
+        android:layout_below="@+id/txtpassword"
+        android:layout_alignLeft="@+id/txtpassword"
+        android:layout_alignStart="@+id/txtpassword"
+        android:hint="Comfirm Password" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/btnnext1"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/spCountry"
+        android:layout_marginTop="82dp"
+        android:layout_alignLeft="@+id/spCountry"
+        android:layout_alignStart="@+id/spCountry"
+        android:layout_alignRight="@+id/spCountry"
+        android:layout_alignEnd="@+id/spCountry" />
+
+    <ImageView
+        android:layout_width="30pt"
+        android:layout_height="30pt"
+        android:id="@+id/imageProfile"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/txtDOB"
+        android:hint="DD/MM/YYYY"
+        android:layout_below="@+id/txtComfirmPassword"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spCountry"
+        android:layout_below="@+id/txtDOB"
+        android:layout_alignLeft="@+id/txtDOB"
+        android:layout_alignStart="@+id/txtDOB"
+        android:layout_alignRight="@+id/txtDOB"
+        android:layout_alignEnd="@+id/txtDOB" />
+
+</RelativeLayout>

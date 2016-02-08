@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/emailcontent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bluebackground"
+    android:fitsSystemWindows="@bool/fitsSystemWindows">
+
+
+    <ImageView
+        android:layout_width="30pt"
+        android:layout_height="30pt"
+        android:id="@+id/emailHolder"
+        android:layout_above="@+id/label_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="55dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD EMAIL ADDRESS"
+        android:id="@+id/label_email"
+        android:layout_above="@+id/txtemail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/txtemail"
+        android:hint="Enter Email..."
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/btnnext"
+        android:background="@android:color/transparent"
+        android:layout_below="@+id/txtemail"
+        android:layout_alignLeft="@+id/txtemail"
+        android:layout_alignStart="@+id/txtemail"
+        android:layout_alignRight="@+id/txtemail"
+        android:layout_alignEnd="@+id/txtemail" />
+
+
+</RelativeLayout>
