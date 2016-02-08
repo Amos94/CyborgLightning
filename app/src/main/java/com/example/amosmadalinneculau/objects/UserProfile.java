@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 //CREATION OF THE PERSON CLASS
-public class Person {
+public class UserProfile {
 
     /*
     A PERSON HAS ONE EMAIL, ONE NAME AND ONE PASSWORD.
@@ -38,7 +38,7 @@ public class Person {
 
 
     //PERSON CONSTRUCTOR
-    public Person(String email, String name, String password, int year, int month, int day, Gender gender, boolean isOnline){
+    public UserProfile(String email, String name, String password, int year, int month, int day, Gender gender, boolean isOnline){
 
         this.email = email;
         this.name = name;
@@ -50,7 +50,7 @@ public class Person {
     }
 
     //PERSON CONSTRUCTOR WITHOUT DATE
-    public Person(String email, String name, String password, Gender gender){
+    public UserProfile(String email, String name, String password, Gender gender, boolean isOnline){
 
         this.email = email;
         this.name = name;
