@@ -1,6 +1,5 @@
 package com.example.amosmadalinneculau.objects;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,29 +22,14 @@ public class Person {
     private String password;
     private Date dateOfBirth;
     private Gender gender;
-    private boolean isOnline;
-    //Interests
-    private ArrayList<Interest> interests = new ArrayList<>();
-    public ArrayList<Interest> getInterests(){
-        return interests;
-    }
-    public Interest getInterestByID(int id){
-        return interests.get(id);
-    }
-    public void addInterest(Interest interest){
-        interests.add(interest);
-    }
-
 
     //PERSON CONSTRUCTOR
-    public Person(String email, String name, String password, int year, int month, int day, Gender gender, boolean isOnline){
+    public Person(String email, String name, String password, int year, int month, int day, Gender gender){
 
         this.email = email;
         this.name = name;
         this.password = password;
-        this.gender = gender;
-        this.isOnline = isOnline;
-
+        this.gender =gender;
         dateOfBirth = new Date(year, month, day);
     }
 
@@ -55,7 +39,7 @@ public class Person {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.gender = gender;
+        this.gender =gender;
 
     }
 
@@ -117,16 +101,6 @@ public class Person {
     }
 
     /*
-    Change/ set the the status of the user.
-     */
-
-    public boolean changeStatus(boolean newIsOnline){
-        isOnline = newIsOnline;
-
-        return !isOnline;
-    }
-
-    /*
     Change the gender. Return the old gender.
      */
     public Gender setGender(Gender newGender){
@@ -165,12 +139,5 @@ public class Person {
      */
     public Date getDate(){
         return dateOfBirth;
-    }
-
-    /*
-    Return true if the user is online, false otherwise
-    */
-    public boolean isOnline(){
-        return isOnline;
     }
 }
