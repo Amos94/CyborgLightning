@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if(connector.getStatus() == "CONNECTED")
             Log.i("Connection: ", "successful");
         else Log.i("Connection: ","Couldn't establish the connection");
+        //fixed bugs
     }
 
 
