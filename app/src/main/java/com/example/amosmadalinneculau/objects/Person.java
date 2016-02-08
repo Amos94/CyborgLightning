@@ -1,6 +1,5 @@
 package com.example.amosmadalinneculau.objects;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -22,40 +21,37 @@ public class Person {
     private String name;
     private String password;
     private Date dateOfBirth;
-    private Gender gender;
-    private boolean isOnline;
-    //Interests
-    private ArrayList<Interest> interests = new ArrayList<>();
-    public ArrayList<Interest> getInterests(){
-        return interests;
-    }
-    public Interest getInterestByID(int id){
-        return interests.get(id);
-    }
-    public void addInterest(Interest interest){
-        interests.add(interest);
-    }
+    private char gender;
 
+    public  Person(){}
 
-    //PERSON CONSTRUCTOR
-    public Person(String email, String name, String password, int year, int month, int day, Gender gender, boolean isOnline){
+    //PERSON CONSTRUCTOR without gender
+    public Person(String email, String name, String password, int year, int month, int day){
 
         this.email = email;
         this.name = name;
         this.password = password;
-        this.gender = gender;
-        this.isOnline = isOnline;
-
         dateOfBirth = new Date(year, month, day);
     }
 
-    //PERSON CONSTRUCTOR WITHOUT DATE
-    public Person(String email, String name, String password, Gender gender){
+    //PERSON CONSTRUCTOR
+    public Person(String email, String name, String password, int year, int month, int day, char gender){
 
         this.email = email;
         this.name = name;
         this.password = password;
-        this.gender = gender;
+        this.gender =gender;
+        dateOfBirth = new Date(year, month, day);
+    }
+
+
+    //PERSON CONSTRUCTOR WITHOUT DATE
+    public Person(String email, String name, String password, char gender){
+
+        this.email = email;
+        this.name = name;
+        this.password = password;
+        this.gender =gender;
 
     }
 
@@ -116,21 +112,13 @@ public class Person {
         return oldDate;
     }
 
-    /*
-    Change/ set the the status of the user.
+    /**
+     * set the Gender of person
+     * @param newGender M for Male, F for Female, N for unspecified
+     * @return old gender
      */
-
-    public boolean changeStatus(boolean newIsOnline){
-        isOnline = newIsOnline;
-
-        return !isOnline;
-    }
-
-    /*
-    Change the gender. Return the old gender.
-     */
-    public Gender setGender(Gender newGender){
-        Gender oldGender;
+    public char setGender(char newGender){
+        char oldGender;
         oldGender = gender;
         gender = newGender;
 
@@ -165,12 +153,5 @@ public class Person {
      */
     public Date getDate(){
         return dateOfBirth;
-    }
-
-    /*
-    Return true if the user is online, false otherwise
-    */
-    public boolean isOnline(){
-        return isOnline;
     }
 }
