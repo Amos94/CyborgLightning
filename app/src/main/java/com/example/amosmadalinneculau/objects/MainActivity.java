@@ -15,9 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.sql.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AsyncResponse {
 
     //U.I. Elements
     protected Button login_button;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     //dialog
     public AlertDialog.Builder builder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password_textfield);
 
         //mysql database
-        connector = new MySQLConnector();
+        PostResponseAsyncTask task = new PostResponseAsyncTask(this);
+        task.execute("http://cyborglightning.esy.es/Register.php");
 
-        connector.sqlOpenConnection();
 
-        if(connector.getStatus() == "CONNECTED")
+        if (connector.getStatus() == "CONNECTED")
             Log.i("Connection: ", "successful");
-        else Log.i("Connection: ","Couldn't establish the connection");
+        else Log.i("Connection: ", "Couldn't establish the connection");
 
         //dialog for login
         builder = new AlertDialog.Builder(this);
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     /*
     Intent for REGISTER
      */
-    public void goToRegisterScreen(View view){
+    public void goToRegisterScreen(View view) {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     Intent for Login
     Verify if the email and password works/ exists
      */
-    public void goToMainScreen(View view){
+    public void goToMainScreen(View view) {
         //to be done when I integrate with Simeon for DATABASES
         //really easy. search in the table
         //if ok then go to main screen
@@ -117,29 +120,28 @@ public class MainActivity extends AppCompatActivity {
         //else suggest to register
 
         Intent intent = new Intent(this, MainMenu.class);
-        if(validLogin())
+        if (validLogin())
             startActivity(intent);
-        else{
+        else {
             //dialog
             builder.create();
         }
 
 
-
     }
 
-    public boolean validLogin(){
+    public boolean validLogin() {
         boolean toReturn = false;
 
         try {
             Statement statement = connector.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 //read the data from database
                 //compare with the user input
 
-                if(resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()){
+                if (resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()) {
                     toReturn = true;
                     break;
                 }
@@ -152,23 +154,28 @@ public class MainActivity extends AppCompatActivity {
         return toReturn;
     }
 
-    public void continueRegistration(View view){
+    public void continueRegistration(View view) {
 
     }
 
     /*
     Get the input of user_email text field
      */
-    public String getEmail(){
+    public String getEmail() {
         return email.getText().toString();
     }
 
     /*
     Get the input of password text field
      */
-    public String getPassword(){
+    public String getPassword() {
 
         return password.getText().toString();
+    }
+
+    @Override
+    public void processFinish(String output) {
+        Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
     }
 
 
