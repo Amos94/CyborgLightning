@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import java.sql.*;
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+public class MainActivity extends AppCompatActivity {
 
     //U.I. Elements
     protected Button login_button;
@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         password = (EditText) findViewById(R.id.password_textfield);
 
         //mysql database
-        PostResponseAsyncTask task = new PostResponseAsyncTask(this);
-        task.execute("http://cyborglightning.esy.es/Register.php");
+
 
 
         if (connector.getStatus() == "CONNECTED")
@@ -173,10 +172,6 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         return password.getText().toString();
     }
 
-    @Override
-    public void processFinish(String output) {
-        Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
-    }
 
 
 }
