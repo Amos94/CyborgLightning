@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
     //mysql connection
     public MySQLConnector connector;
 
+    //PHPRequest for login
+    protected PHPRequest request;
+
     //dialog
-    public AlertDialog.Builder builder;
+    //public AlertDialog.Builder builder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.user_email);
         password = (EditText) findViewById(R.id.password_textfield);
 
-        //mysql database
+        /*//mysql database
         connector = new MySQLConnector();
 
         connector.sqlOpenConnection();
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
             }
-        });
+        });*/
     }
 
 
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         else{
             //dialog
-            builder.create();
+           // builder.create();
         }
 
 
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean validLogin(){
         boolean toReturn = false;
 
-        try {
+        /*try {
             Statement statement = connector.connection.createStatement();
             ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
 
@@ -148,6 +151,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+*/
+
+        request = new PHPRequest(getEmail(),getPassword());
+
+        request.doInBackground("");
+
+        if(request.connected == true)
+            toReturn = true;
+        else toReturn = false;
 
         return toReturn;
     }
