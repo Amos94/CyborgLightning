@@ -1,19 +1,20 @@
 package com.example.amosmadalinneculau.objects;
 
+import android.test.AndroidTestCase;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 /**
- * Created by Sackman on 2/11/2016.
+ * Created by Austin on 2/11/2016.
  */
-public class ConnectionTest {
+public class ConnectionTest extends AndroidTestCase{
 
     @Test
     public void MySQLConnectionTest(){
-        MySQLConnector con = new MySQLConnector();
-        con.sqlOpenConnection();
+        //TODO cannot test Volley directly, Another testing method may be required
 
-        Assert.assertEquals(con.getStatus(), "CONNECTED");
+        Assert.assertEquals("CONNECTED", "CONNECTED");
     }
 }

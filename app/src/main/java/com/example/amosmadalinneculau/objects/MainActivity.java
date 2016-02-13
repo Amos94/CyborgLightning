@@ -55,13 +55,6 @@ public class MainActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.user_email);
         password = (EditText) findViewById(R.id.password_textfield);
 
-        //mysql database
-
-
-
-        if (connector.getStatus() == "CONNECTED")
-            Log.i("Connection: ", "successful");
-        else Log.i("Connection: ", "Couldn't establish the connection");
 
         //dialog for login
         builder = new AlertDialog.Builder(this);
@@ -110,48 +103,48 @@ public class MainActivity extends AppCompatActivity {
     Intent for Login
     Verify if the email and password works/ exists
      */
-    public void goToMainScreen(View view) {
-        //to be done when I integrate with Simeon for DATABASES
-        //really easy. search in the table
-        //if ok then go to main screen
-        //if not search if the eamil exists
-        //if so -> problem with password
-        //else suggest to register
+//    public void goToMainScreen(View view) {
+//        //to be done when I integrate with Simeon for DATABASES
+//        //really easy. search in the table
+//        //if ok then go to main screen
+//        //if not search if the eamil exists
+//        //if so -> problem with password
+//        //else suggest to register
+//
+//        Intent intent = new Intent(this, MainMenu.class);
+//        if (validLogin())
+//            startActivity(intent);
+//        else {
+//            //dialog
+//            builder.create();
+//        }
+//
+//
+//    }
 
-        Intent intent = new Intent(this, MainMenu.class);
-        if (validLogin())
-            startActivity(intent);
-        else {
-            //dialog
-            builder.create();
-        }
-
-
-    }
-
-    public boolean validLogin() {
-        boolean toReturn = false;
-
-        try {
-            Statement statement = connector.connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
-
-            while (resultSet.next()) {
-                //read the data from database
-                //compare with the user input
-
-                if (resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()) {
-                    toReturn = true;
-                    break;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return toReturn;
-    }
+//    public boolean validLogin() {
+//        boolean toReturn = false;
+//
+//        try {
+//            Statement statement = connector.connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
+//
+//            while (resultSet.next()) {
+//                //read the data from database
+//                //compare with the user input
+//
+//                if (resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()) {
+//                    toReturn = true;
+//                    break;
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return toReturn;
+//    }
 
     public void continueRegistration(View view) {
 

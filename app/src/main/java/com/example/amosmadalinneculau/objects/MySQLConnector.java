@@ -4,66 +4,66 @@ package com.example.amosmadalinneculau.objects;
  * Created by Amos Madalin Neculau on 04/02/2016.
  */
 
-import android.content.ContentValues;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.*;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
-import javax.net.ssl.HttpsURLConnection;
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MySQLConnector {
 
-    //Status
-        //CONNECTED
-        //NOT CONNECTED
-        //MORE STATUSES TO BE ADDED
-    public String status = "unknown";
-
-    //EXTERNAL DATABASE
-    //CONNECTION CREDENTIALS
-    protected static final String DB_URL="http://cyborglightning.esy.es/Register.php";
-    protected static final String USER="u923983532_user";
-    protected static final String PASSWORD="pass123";
-
-    //CONNECTION AND STATEMENT
-    public Connection connection;
-    Statement statement;
+    public String output = "unknown";
+    private final String url="http://nashdomain.esy.es/";
 
     public MySQLConnector() {
         sqlOpenConnection();
     }
 
-    public String getStatus(){
-        return status;
+    public String getOutput(){
+        return output;
     }
 
     public void sqlOpenConnection(){
         //https://ihofmann.wordpress.com/2013/01/23/android-sending-post-requests-with-parameters/
+        String phpFile = "get_all_users.php";
         try{
-            String urlParams = "name=testUserName&age=49&password=testPassword&email=joe@gmail.com";
+            JsonObjectRequest request = new JsonObjectRequest(Method.GET, url+phpFile, (String)null,
+                    new Response.Listener<JSONObject>() {
 
-            URL urlToRequest = new URL(DB_URL);
-            HttpURLConnection urlConnection = (HttpURLConnection) urlToRequest.openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //TODO stuff
+                        }
+                    }, new Response.ErrorListener(){
 
-            DataOutputStream dStream = new DataOutputStream(urlConnection.getOutputStream());
-            dStream.writeBytes(urlParams);
-            dStream.flush();
-            dStream.close();
-
-            status = "CONNECTED";
+                        @Override
+                        public void onErrorResponse(VolleyError error){
+                            //TODO stuff
+                        }
+                    }
+                    );
         }
         catch(Exception ex){
-            status = "NOT CONNECTED";
+            output = "NOT CONNECTED";
             ex.printStackTrace();
         }
     }
-
 }

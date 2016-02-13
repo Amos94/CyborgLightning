@@ -6,10 +6,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,17 +25,17 @@ public class Register extends AppCompatActivity {
 
 
     //Info for register
-    protected EditText email;
-    protected EditText password;
-    protected EditText name;
-    protected EditText dob;
-    protected boolean isMale;
-    protected boolean isActivated;
-    protected RadioButton maleRadioRegister;
-    protected RadioButton femaleRadioRegister;
-    protected RadioGroup radioGroup;
-    protected int toAddGender;
-    protected int toAddActivated;
+    private EditText email;
+    private EditText name;
+    private EditText password;
+    private EditText dob;
+    private boolean isMale;
+    private boolean isActivated;
+    private RadioButton maleRadioRegister;
+    private RadioButton femaleRadioRegister;
+    private RadioGroup radioGroup;
+    private int toAddGender;
+    private int toAddActivated;
 
     //MYSQL DATABASE
     public MySQLConnector connector;
@@ -56,8 +63,8 @@ public class Register extends AppCompatActivity {
 */
         //USER INPUT
         email = (EditText) findViewById(R.id.emailRegister);
-        password = (EditText) findViewById(R.id.passwordRegister);
         name = (EditText) findViewById(R.id.nameRegister);
+        password = (EditText) findViewById(R.id.passwordRegister);
         dob = (EditText) findViewById(R.id.dateRegister);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupRegister);
@@ -97,22 +104,15 @@ public class Register extends AppCompatActivity {
 
 
     public void insertData(){
-        try {
-            Statement statement = connector.connection.createStatement();
-            statement.executeQuery("insert into `users`.`projectrun` " +
-                    "(`email`,`name`,`password`,`dob`,`gender`, `activated`)" +
-                    "values"+
-                     "(" +
-                            "`"+email.getText().toString()+"`,"+
-                            "`"+name.getText().toString()+"`,"+
-                            "`"+password.getText().toString()+"`,"+
-                            "`"+dob.getText().toString()+"`,"+
-                            toAddGender+","+
-                            toAddActivated+
-                            ")");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+    }
+
+    public void testGetData(View v){
+        String output;
+
+        SqlRequest sqlRequest = new SqlRequest(this, "get_all_users.php");
+
+        output = sqlRequest.Run();
     }
 
     public void goToMainMenuFromRegistration(View view){
