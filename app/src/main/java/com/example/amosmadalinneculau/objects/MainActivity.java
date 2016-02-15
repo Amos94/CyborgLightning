@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
-
     //U.I. Elements
     protected Button login_button;
     protected Button register_button;
@@ -39,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         settings = getSharedPreferences(myPref, Context.MODE_PRIVATE);
         editor = settings.edit();
-        autoLogin = settings.getBoolean("save",true);
+
+        //To prevent crashing, autoLogin is set to false for now
+        //autoLogin = settings.getBoolean("save",true);
+
+        autoLogin = false;
 
         if(autoLogin){
             //gotoMainScreen method
@@ -74,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -106,14 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToMainScreen(View view){
-        //if log-in is successful then do this
-        if(autoLogin) {
-            editor.putString("email", getEmail());
-            editor.putString("password", getPassword());
+       /* if(!autoLogin) {
         }
+        */
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
-
     }
 
     /*
@@ -178,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
     Get the input of password text field
      */
     public String getPassword() {
-
         return password.getText().toString();
     }
 }

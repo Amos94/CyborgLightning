@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Register extends AppCompatActivity {
 
-
     //Info for register
     private EditText emailET;
     private EditText nameET;
@@ -60,11 +59,6 @@ public class Register extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
-
-
 */
         //USER INPUT
         emailET = (EditText) findViewById(R.id.emailRegister);
@@ -77,12 +71,12 @@ public class Register extends AppCompatActivity {
         femaleRadioRegister = (RadioButton) findViewById(R.id.femaleRadioRegister);
 
         //help for the insertion
-        if(maleRadioRegister.isChecked() == true)
+        if(maleRadioRegister.isChecked())
             isMale = true;
-        if(femaleRadioRegister.isChecked() == true)
+        if(femaleRadioRegister.isChecked())
             isMale = false;
 
-        if(isMale == true) {
+        if(isMale) {
             toAddGender = 1;
         }
         else {
@@ -102,12 +96,8 @@ public class Register extends AppCompatActivity {
         else{
             insertData();
             //intent to main menu
-
         }
     }
-
-
-
 
     public void insertData(){
     }
@@ -127,13 +117,8 @@ public class Register extends AppCompatActivity {
         params.put("dob", dob);
         params.put("gender", gender);
 
-
         SqlTask sqlWork = new SqlTask();
-
         sqlWork.execute(params,this.getApplicationContext());
-
-
-
     }
 
     public void goToMainMenuFromRegistration(View view){
@@ -149,13 +134,9 @@ public class Register extends AppCompatActivity {
         startActivity(intent);
     }
     private class SqlTask extends AsyncTask<Object,Void,SqlRequest> {
-
-
         @Override
         protected void onPostExecute(SqlRequest sqlRequest) {
             super.onPostExecute(sqlRequest);
-
-
             try {
                 Log.d("Response is ", response.toString());
                 //gets 'success' part of json output. 1 if good, 0 if fail
@@ -173,7 +154,7 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected SqlRequest doInBackground(Object... maps) {
-           Map params = (Map)maps[0];
+            Map params = (Map)maps[0];
             //sending request to php file with php file name and params
             SqlRequest sqlRequest = new SqlRequest((Context)maps[1], "get_user.php", params);
 
@@ -181,21 +162,13 @@ public class Register extends AppCompatActivity {
             JSONObject response = sqlRequest.getOutput();
 
             setRequest(response);
-
             return sqlRequest;
         }
-
 
         //TODO wait for server to respond before calling getoutput
     }
 
     public void setRequest(JSONObject temp){
         response = temp;
-
     }
-
-
-
-
-
 }
