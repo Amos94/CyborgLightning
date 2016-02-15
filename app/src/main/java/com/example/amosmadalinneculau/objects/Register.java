@@ -1,6 +1,8 @@
 package com.example.amosmadalinneculau.objects;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -39,7 +41,7 @@ public class Register extends AppCompatActivity {
     private RadioGroup radioGroup;
     private int toAddGender;
     private int toAddActivated;
-
+    private JSONObject response;
     //MYSQL DATABASE
     public MySQLConnector connector;
 
@@ -106,6 +108,7 @@ public class Register extends AppCompatActivity {
 
 
 
+
     public void insertData(){
     }
 
@@ -124,26 +127,13 @@ public class Register extends AppCompatActivity {
         params.put("dob", dob);
         params.put("gender", gender);
 
-        //sending request to php file with php file name and params
-        SqlRequest sqlRequest = new SqlRequest(this, "get_user.php", params);
 
-        //runs the php post request and returns result as json object
-        JSONObject response = sqlRequest.getOutput();
-        //TODO wait for server to respond before calling getoutput
+        SqlTask sqlWork = new SqlTask();
 
-        try {
-            Log.d("Response is ", response.toString());
-            //gets 'success' part of json output. 1 if good, 0 if fail
-            String success = response.getString("success");
-            Log.d("success is ", success);
+        sqlWork.execute(params,this.getApplicationContext());
 
-            //gets 'user' part of json object
-            String temp = response.getString("user");
-            JSONObject jsonObject1 = new JSONObject(temp.substring(1,temp.length()-1));
-            Log.d("user is ", jsonObject1.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+
     }
 
     public void goToMainMenuFromRegistration(View view){
@@ -158,6 +148,53 @@ public class Register extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    private class SqlTask extends AsyncTask<Object,Void,SqlRequest> {
+
+
+        @Override
+        protected void onPostExecute(SqlRequest sqlRequest) {
+            super.onPostExecute(sqlRequest);
+
+
+            try {
+                Log.d("Response is ", response.toString());
+                //gets 'success' part of json output. 1 if good, 0 if fail
+                String success = response.getString("success");
+                Log.d("success is ", success);
+
+                //gets 'user' part of json object
+                String temp = response.getString("user");
+                JSONObject jsonObject1 = new JSONObject(temp.substring(1,temp.length()-1));
+                Log.d("user is ", jsonObject1.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected SqlRequest doInBackground(Object... maps) {
+           Map params = (Map)maps[0];
+            //sending request to php file with php file name and params
+            SqlRequest sqlRequest = new SqlRequest((Context)maps[1], "get_user.php", params);
+
+            //runs the php post request and returns result as json object
+            JSONObject response = sqlRequest.getOutput();
+
+            setRequest(response);
+
+            return sqlRequest;
+        }
+
+
+        //TODO wait for server to respond before calling getoutput
+    }
+
+    public void setRequest(JSONObject temp){
+        response = temp;
+
+    }
+
+
 
 
 
