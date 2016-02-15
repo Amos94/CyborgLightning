@@ -20,15 +20,18 @@ import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Register extends AppCompatActivity {
 
 
     //Info for register
-    private EditText email;
-    private EditText name;
-    private EditText password;
-    private EditText dob;
+    private EditText emailET;
+    private EditText nameET;
+    private EditText passwordET;
+    private EditText dobET;
     private boolean isMale;
     private boolean isActivated;
     private RadioButton maleRadioRegister;
@@ -62,10 +65,10 @@ public class Register extends AppCompatActivity {
 
 */
         //USER INPUT
-        email = (EditText) findViewById(R.id.emailRegister);
-        name = (EditText) findViewById(R.id.nameRegister);
-        password = (EditText) findViewById(R.id.passwordRegister);
-        dob = (EditText) findViewById(R.id.dateRegister);
+        emailET = (EditText) findViewById(R.id.emailRegister);
+        nameET = (EditText) findViewById(R.id.nameRegister);
+        passwordET = (EditText) findViewById(R.id.passwordRegister);
+        dobET = (EditText) findViewById(R.id.dateRegister);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupRegister);
         maleRadioRegister = (RadioButton) findViewById(R.id.maleRadioRegister);
@@ -104,15 +107,43 @@ public class Register extends AppCompatActivity {
 
 
     public void insertData(){
-
     }
 
     public void testGetData(View v){
-        String output;
+        String email = emailET.getText().toString();
+        String name = "John";
+        String password = "thed";
+        String dob = "2/2/2012";
+        String gender = "T";
 
-        SqlRequest sqlRequest = new SqlRequest(this, "get_all_users.php");
+        //parameters to post to php file
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", email);
+        params.put("name", name);
+        params.put("password", password);
+        params.put("dob", dob);
+        params.put("gender", gender);
 
-        output = sqlRequest.Run();
+        //sending request to php file with php file name and params
+        SqlRequest sqlRequest = new SqlRequest(this, "get_user.php", params);
+
+        //runs the php post request and returns result as json object
+        JSONObject response = sqlRequest.getOutput();
+        //TODO wait for server to respond before calling getoutput
+
+        try {
+            Log.d("Response is ", response.toString());
+            //gets 'success' part of json output. 1 if good, 0 if fail
+            String success = response.getString("success");
+            Log.d("success is ", success);
+
+            //gets 'user' part of json object
+            String temp = response.getString("user");
+            JSONObject jsonObject1 = new JSONObject(temp.substring(1,temp.length()-1));
+            Log.d("user is ", jsonObject1.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void goToMainMenuFromRegistration(View view){
