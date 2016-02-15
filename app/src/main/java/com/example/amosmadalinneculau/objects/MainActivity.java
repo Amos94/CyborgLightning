@@ -32,17 +32,17 @@ public class MainActivity extends AppCompatActivity {
     private static final String myPref = "MyPref";
     private SharedPreferences settings;
     private SharedPreferences.Editor editor;
+    Boolean autoLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settings = getSharedPreferences(myPref, Context.MODE_PRIVATE);
         editor = settings.edit();
-        Boolean isSaved = settings.getBoolean("save",false);
+        autoLogin = settings.getBoolean("save",true);
 
-        if(isSaved){
-            Intent intent = new Intent(this, MainMenu.class);
-            startActivity(intent);
+        if(autoLogin){
+            //gotoMainScreen method
         } else {
             setContentView(R.layout.activity_main);
             //setContentView(R.layout.activity_main_menu);
@@ -107,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToMainScreen(View view){
         //if log-in is successful then do this
+        if(autoLogin) {
+            editor.putString("email", getEmail());
+            editor.putString("password", getPassword());
+        }
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
+
     }
 
     /*
@@ -176,7 +181,4 @@ public class MainActivity extends AppCompatActivity {
 
         return password.getText().toString();
     }
-
-
-
 }
