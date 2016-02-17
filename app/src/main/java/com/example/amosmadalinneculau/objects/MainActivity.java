@@ -7,11 +7,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     //U.I. Elements
@@ -107,63 +120,65 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToMainScreen(View view){
-       /* if(!autoLogin) {
-        }
-        */
-        Intent intent = new Intent(this, MainMenu.class);
-        startActivity(intent);
+    public void checkLogin(View view){
+       if(!autoLogin){
+
+           final String url = "http://nashdomain.esy.es/loginUser.php";
+
+           //parameters to post to php file
+           final Map<String, String> params = new HashMap<>();
+           params.put("email", email.getText().toString());
+           params.put("password", password.getText().toString());
+
+           //request to get the user from the mysql database using php
+           StringRequest request = new StringRequest(Request.Method.POST, url,
+                   new Response.Listener<String>() {
+
+                       @Override
+                       public void onResponse(String response) {
+                           try {
+                               JSONObject jsonResponse = new JSONObject(response);
+
+                               boolean success = jsonResponse.getString("success").equals("1");
+                               Log.d("Success", String.valueOf(success));
+
+                               String message = jsonResponse.getString("message");
+                               Log.d("Message is", message);
+
+                               if(success){goToMainMenu();}
+                               else{toasty(message);}
+
+                           } catch (JSONException e) {
+                               e.printStackTrace();
+                               Log.d("JSON failed to parse: ", response);
+                           }
+                       }
+                   }, new Response.ErrorListener() {
+
+               @Override
+               public void onErrorResponse(VolleyError error) {
+                   Log.d("VolleyError at url ", url);
+               }
+           }
+           ) {
+               //Parameters inserted
+               @Override
+               protected Map<String, String> getParams() {
+                   return params;
+               }
+           };
+           //put the request in the static queue
+           VolleyQueue.getInstance(this).addToRequestQueue(request);
+       }
     }
 
-    /*
-    Intent for Login
-    Verify if the email and password works/ exists
-     */
-//    public void goToMainScreen(View view) {
-//        //to be done when I integrate with Simeon for DATABASES
-//        //really easy. search in the table
-//        //if ok then go to main screen
-//        //if not search if the eamil exists
-//        //if so -> problem with password
-//        //else suggest to register
-//
-//        Intent intent = new Intent(this, MainMenu.class);
-//        if (validLogin())
-//            startActivity(intent);
-//        else {
-//            //dialog
-//            builder.create();
-//        }
-//
-//
-//    }
+    private void toasty(String message){
+        Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
-//    public boolean validLogin() {
-//        boolean toReturn = false;
-//
-//        try {
-//            Statement statement = connector.connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
-//
-//            while (resultSet.next()) {
-//                //read the data from database
-//                //compare with the user input
-//
-//                if (resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()) {
-//                    toReturn = true;
-//                    break;
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return toReturn;
-//    }
-
-    public void continueRegistration(View view) {
-
+    public void goToMainMenu() {
+        Intent intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
     }
 
     /*

@@ -154,7 +154,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void sendPassword(View view) {
-        final String url = "http://nashdomain.esy.es/sendPassword.php";
+        final String url = "http://nashdomain.esy.es/get_user.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
@@ -172,12 +172,6 @@ public class Register extends AppCompatActivity {
                             Log.d("Success", String.valueOf(success));
                             String message = jsonResponse.getString("message");
                             Log.d("Message is", message);
-
-                            if (success) {
-                                //email sent
-                            } else {
-                                //missing params or php file went to shit
-                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("JSON failed to parse: ", response);
