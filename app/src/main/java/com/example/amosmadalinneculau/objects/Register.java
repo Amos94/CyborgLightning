@@ -16,6 +16,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,31 +99,58 @@ public class Register extends AppCompatActivity {
             //insert the code send by email
         }
         else{
-            insertData();
+            //insertData();
             //intent to main menu
         }
     }
 
-    public void insertData(){
-    }
-
-    public void testGetData(View v){
-        String email = emailET.getText().toString();
-        String name = "John";
-        String password = "thed";
-        String dob = "2/2/2012";
-        String gender = "T";
+    public void insertData(View view){
+        final String url = "http://nashdomain.esy.es/insertNewUser.php";
 
         //parameters to post to php file
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("email", email);
-        params.put("name", name);
-        params.put("password", password);
-        params.put("dob", dob);
-        params.put("gender", gender);
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("name", nameET.getText().toString());
+        params.put("password", passwordET.getText().toString());
+        params.put("dob", dobET.getText().toString());
+        params.put("gender", "Test");
 
-        SqlTask sqlWork = new SqlTask();
-        sqlWork.execute(params,this.getApplicationContext());
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
     }
 
     public void goToMainMenuFromRegistration(View view){
@@ -132,43 +164,5 @@ public class Register extends AppCompatActivity {
     public void changeToMainScreen(View view){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-    }
-    private class SqlTask extends AsyncTask<Object,Void,SqlRequest> {
-        @Override
-        protected void onPostExecute(SqlRequest sqlRequest) {
-            super.onPostExecute(sqlRequest);
-            try {
-                Log.d("Response is ", response.toString());
-                //gets 'success' part of json output. 1 if good, 0 if fail
-                String success = response.getString("success");
-                Log.d("success is ", success);
-
-                //gets 'user' part of json object
-                String temp = response.getString("user");
-                JSONObject jsonObject1 = new JSONObject(temp.substring(1,temp.length()-1));
-                Log.d("user is ", jsonObject1.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected SqlRequest doInBackground(Object... maps) {
-            Map params = (Map)maps[0];
-            //sending request to php file with php file name and params
-            SqlRequest sqlRequest = new SqlRequest((Context)maps[1], "get_user.php", params);
-
-            //runs the php post request and returns result as json object
-            JSONObject response = sqlRequest.getOutput();
-
-            setRequest(response);
-            return sqlRequest;
-        }
-
-        //TODO wait for server to respond before calling getoutput
-    }
-
-    public void setRequest(JSONObject temp){
-        response = temp;
     }
 }

@@ -27,7 +27,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
-
+//TODO Delete class it is no longer used
 public class MySQLConnector {
 
     public String output = "unknown";
@@ -50,13 +50,11 @@ public class MySQLConnector {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            //TODO stuff
                         }
                     }, new Response.ErrorListener(){
 
                         @Override
                         public void onErrorResponse(VolleyError error){
-                            //TODO stuff
                         }
                     }
                     );
