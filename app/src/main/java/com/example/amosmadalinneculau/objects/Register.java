@@ -154,7 +154,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void sendPassword(View view) {
-        final String url = "http://nashdomain.esy.es/get_user.php";
+        final String url = "http://nashdomain.esy.es/sendPassword.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
@@ -170,15 +170,13 @@ public class Register extends AppCompatActivity {
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getString("success").equals("1");
                             Log.d("Success", String.valueOf(success));
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
 
                             if (success) {
-                                String password = jsonResponse.getJSONObject("user").getString("password");
-                                Log.d("password is", password);
-
-                                //TODO Send email method goes here. use: emailET.getText().toString() & password
+                                //email sent
                             } else {
-                                String message = jsonResponse.getString("message");
-                                Log.d("Message is", message);
+                                //missing params or php file went to shit
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
