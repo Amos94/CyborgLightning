@@ -153,6 +153,56 @@ public class Register extends AppCompatActivity {
         VolleyQueue.getInstance(this).addToRequestQueue(request);
     }
 
+    public void sendPassword(View view) {
+        final String url = "http://nashdomain.esy.es/get_user.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<>();
+        params.put("email", emailET.getText().toString());
+
+        //request to get the user from the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            if (success) {
+                                String password = jsonResponse.getJSONObject("user").getString("password");
+                                Log.d("password is", password);
+
+                                //TODO Send email method goes here. use: emailET.getText().toString() & password
+                            } else {
+                                String message = jsonResponse.getString("message");
+                                Log.d("Message is", message);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ) {
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
     public void goToMainMenuFromRegistration(View view){
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
