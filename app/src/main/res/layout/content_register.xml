@@ -188,7 +188,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="5"
-                android:onClick="sendPassword"/>
+                android:onClick="getFriends"/>
         </LinearLayout>
     </LinearLayout>
     </ScrollView>
