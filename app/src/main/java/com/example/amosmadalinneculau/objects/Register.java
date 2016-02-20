@@ -1,35 +1,51 @@
 package com.example.amosmadalinneculau.objects;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Register extends AppCompatActivity {
 
-
     //Info for register
-    protected EditText email;
-    protected EditText password;
-    protected EditText name;
-    protected EditText dob;
-    protected boolean isMale;
-    protected boolean isActivated;
-    protected RadioButton maleRadioRegister;
-    protected RadioButton femaleRadioRegister;
-    protected RadioGroup radioGroup;
-    protected int toAddGender;
-    protected int toAddActivated;
-
+    private EditText emailET;
+    private EditText nameET;
+    private EditText passwordET;
+    private EditText dobET;
+    private boolean isMale;
+    private boolean isActivated;
+    private RadioButton maleRadioRegister;
+    private RadioButton femaleRadioRegister;
+    private RadioGroup radioGroup;
+    private int toAddGender;
+    private int toAddActivated;
+    private JSONObject response;
     //MYSQL DATABASE
     public MySQLConnector connector;
 
@@ -48,29 +64,24 @@ public class Register extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
-
-
 */
         //USER INPUT
-        email = (EditText) findViewById(R.id.emailRegister);
-        password = (EditText) findViewById(R.id.passwordRegister);
-        name = (EditText) findViewById(R.id.nameRegister);
-        dob = (EditText) findViewById(R.id.dateRegister);
+        emailET = (EditText) findViewById(R.id.emailRegister);
+        nameET = (EditText) findViewById(R.id.nameRegister);
+        passwordET = (EditText) findViewById(R.id.passwordRegister);
+        dobET = (EditText) findViewById(R.id.dateRegister);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupRegister);
         maleRadioRegister = (RadioButton) findViewById(R.id.maleRadioRegister);
         femaleRadioRegister = (RadioButton) findViewById(R.id.femaleRadioRegister);
 
         //help for the insertion
-        if(maleRadioRegister.isChecked() == true)
+        if(maleRadioRegister.isChecked())
             isMale = true;
-        if(femaleRadioRegister.isChecked() == true)
+        if(femaleRadioRegister.isChecked())
             isMale = false;
 
-        if(isMale == true) {
+        if(isMale) {
             toAddGender = 1;
         }
         else {
@@ -88,31 +99,203 @@ public class Register extends AppCompatActivity {
             //insert the code send by email
         }
         else{
-            insertData();
+            //insertData();
             //intent to main menu
-
         }
     }
 
+    public void insertData(View view){
+        final String url = "http://nashdomain.esy.es/insertNewUser.php";
 
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("name", nameET.getText().toString());
+        params.put("password", passwordET.getText().toString());
+        params.put("dob", dobET.getText().toString());
+        params.put("gender", "Test");
 
-    public void insertData(){
-        try {
-            Statement statement = connector.connection.createStatement();
-            statement.executeQuery("insert into `users`.`projectrun` " +
-                    "(`email`,`name`,`password`,`dob`,`gender`, `activated`)" +
-                    "values"+
-                     "(" +
-                            "`"+email.getText().toString()+"`,"+
-                            "`"+name.getText().toString()+"`,"+
-                            "`"+password.getText().toString()+"`,"+
-                            "`"+dob.getText().toString()+"`,"+
-                            toAddGender+","+
-                            toAddActivated+
-                            ")");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
         }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void sendPassword(View view) {
+        final String url = "http://nashdomain.esy.es/get_user.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<>();
+        params.put("email", emailET.getText().toString());
+
+        //request to get the user from the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ) {
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void insertFriend(View view){
+        final String url = "http://nashdomain.esy.es/insert_friend.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("emailA", emailET.getText().toString());
+        params.put("emailB", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void getFriends(View view){
+        final String url = "http://nashdomain.esy.es/get_friends.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+
+                            //clips the brackets off of the php array
+                            String friends = jsonResponse.getString("friends");
+                            friends = friends.substring(1,friends.length()-1);
+                            Log.d("Friends is", friends);
+
+                            //clips the quotation marks off of emails
+                            String[] test = friends.split(",");
+                            for(int i = 0; i < test.length; i++){
+                                test[i] = test[i].substring(1,test[i].length()-1);
+                            }
+                            Log.d("Test is", test[0]+" "+test[1]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
     }
 
     public void goToMainMenuFromRegistration(View view){
@@ -127,7 +310,4 @@ public class Register extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
-
-
 }

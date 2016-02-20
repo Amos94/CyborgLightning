@@ -4,21 +4,29 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import java.sql.*;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
     //U.I. Elements
     protected Button login_button;
     protected Button register_button;
@@ -32,12 +40,29 @@ public class MainActivity extends AppCompatActivity {
 
     //dialog
     public AlertDialog.Builder builder;
+
+    private static final String myPref = "MyPref";
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
+    Boolean autoLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //setContentView(R.layout.activity_main_menu);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        settings = getSharedPreferences(myPref, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        //To prevent crashing, autoLogin is set to false for now
+        //autoLogin = settings.getBoolean("save",true);
+
+        autoLogin = false;
+
+        if(autoLogin){
+            //gotoMainScreen method
+        } else {
+            setContentView(R.layout.activity_main);
+            //setContentView(R.layout.activity_main_menu);
+            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 /*        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -49,30 +74,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        email = (EditText) findViewById(R.id.user_email);
-        password = (EditText) findViewById(R.id.password_textfield);
+            email = (EditText) findViewById(R.id.user_email);
+            password = (EditText) findViewById(R.id.password_textfield);
 
-        //mysql database
-        connector = new MySQLConnector();
+            //dialog for login
+            builder = new AlertDialog.Builder(this);
 
-        connector.sqlOpenConnection();
-
-        if(connector.getStatus() == "CONNECTED")
-            Log.i("Connection: ", "successful");
-        else Log.i("Connection: ","Couldn't establish the connection");
-
-        //dialog for login
-        builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Couldn't login")
-                .setTitle("There was a problem with your email or password.");
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-            }
-        });
+            builder.setMessage("Couldn't login")
+                    .setTitle("There was a problem with your email or password.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                }
+            });
+        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,77 +115,83 @@ public class MainActivity extends AppCompatActivity {
     /*
     Intent for REGISTER
      */
-    public void goToRegisterScreen(View view){
+    public void goToRegisterScreen(View view) {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
 
-    /*
-    Intent for Login
-    Verify if the email and password works/ exists
-     */
-    public void goToMainScreen(View view){
-        //to be done when I integrate with Simeon for DATABASES
-        //really easy. search in the table
-        //if ok then go to main screen
-        //if not search if the eamil exists
-        //if so -> problem with password
-        //else suggest to register
+    public void checkLogin(View view){
+       if(!autoLogin){
 
+           final String url = "http://nashdomain.esy.es/loginUser.php";
+
+           //parameters to post to php file
+           final Map<String, String> params = new HashMap<>();
+           params.put("email", email.getText().toString());
+           params.put("password", password.getText().toString());
+
+           //request to get the user from the mysql database using php
+           StringRequest request = new StringRequest(Request.Method.POST, url,
+                   new Response.Listener<String>() {
+
+                       @Override
+                       public void onResponse(String response) {
+                           try {
+                               JSONObject jsonResponse = new JSONObject(response);
+
+                               boolean success = jsonResponse.getString("success").equals("1");
+                               Log.d("Success", String.valueOf(success));
+
+                               String message = jsonResponse.getString("message");
+                               Log.d("Message is", message);
+
+                               if(success){goToMainMenu();}
+                               else{toasty(message);}
+
+                           } catch (JSONException e) {
+                               e.printStackTrace();
+                               Log.d("JSON failed to parse: ", response);
+                           }
+                       }
+                   }, new Response.ErrorListener() {
+
+               @Override
+               public void onErrorResponse(VolleyError error) {
+                   Log.d("VolleyError at url ", url);
+               }
+           }
+           ) {
+               //Parameters inserted
+               @Override
+               protected Map<String, String> getParams() {
+                   return params;
+               }
+           };
+           //put the request in the static queue
+           VolleyQueue.getInstance(this).addToRequestQueue(request);
+       }
+    }
+
+    private void toasty(String message){
+        Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void goToMainMenu() {
         Intent intent = new Intent(this, MainMenu.class);
-        if(validLogin())
-            startActivity(intent);
-        else{
-            //dialog
-            builder.create();
-        }
-
-
-
-    }
-
-    public boolean validLogin(){
-        boolean toReturn = false;
-
-        try {
-            Statement statement = connector.connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("Select * from `project_run`.`users`");
-
-            while(resultSet.next()){
-                //read the data from database
-                //compare with the user input
-
-                if(resultSet.getString("email") == email.getText().toString() && resultSet.getString("password") == password.getText().toString()){
-                    toReturn = true;
-                    break;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return toReturn;
-    }
-
-    public void continueRegistration(View view){
-
+        startActivity(intent);
     }
 
     /*
     Get the input of user_email text field
      */
-    public String getEmail(){
+    public String getEmail() {
         return email.getText().toString();
     }
 
     /*
     Get the input of password text field
      */
-    public String getPassword(){
-
+    public String getPassword() {
         return password.getText().toString();
     }
-
-
 }

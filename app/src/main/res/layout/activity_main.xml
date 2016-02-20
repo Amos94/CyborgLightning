@@ -74,7 +74,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="5"
-                android:onClick="goToMainScreen" />
+                android:onClick="checkLogin" />
 
             <Button
                 android:layout_width="wrap_content"
