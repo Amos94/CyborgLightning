@@ -77,7 +77,7 @@ public class Person {
     }
 
     /*
-    Change the name. Return the old name.
+    Change the validName. Return the old validName.
      */
     public String setName(String newName){
 
@@ -147,7 +147,7 @@ public class Person {
     }
 
     /*
-   Return the name.
+   Return the validName.
     */
     public String getName(){
         return name;

@@ -1,79 +1,74 @@
 package com.example.amosmadalinneculau.objects;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
     //Info for register
-    private EditText emailET;
-    private EditText nameET;
-    private EditText passwordET;
-    private EditText dobET;
-    private boolean isMale;
-    private boolean isActivated;
-    private RadioButton maleRadioRegister;
-    private RadioButton femaleRadioRegister;
-    private RadioGroup radioGroup;
-    private int toAddGender;
-    private int toAddActivated;
-    private JSONObject response;
+    EditText emailET;
+    Button btndone;
+    EditText emailConfirmET;
+    Button loginPage;
+    EditText nameET;
+    EditText passwordET;
+    EditText ConfirmpasswordET;
+    EditText dobET;
+    boolean isMale;
+    boolean isActivated;
+    RadioButton maleRadioRegister;
+    RadioButton femaleRadioRegister;
+    RadioGroup radioGroup;
+    int toAddGender;
+    int toAddActivated;
+    int age;
+
+
+    JSONObject response;
     //MYSQL DATABASE
     public MySQLConnector connector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_registration_page);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
         //USER INPUT
-        emailET = (EditText) findViewById(R.id.emailRegister);
-        nameET = (EditText) findViewById(R.id.nameRegister);
-        passwordET = (EditText) findViewById(R.id.passwordRegister);
-        dobET = (EditText) findViewById(R.id.dateRegister);
+        emailET = (EditText) findViewById(R.id.txtEmail);
+        emailConfirmET = (EditText) findViewById(R.id.txtConfirmEmail);
+        nameET = (EditText) findViewById(R.id.txtName);
 
+        passwordET = (EditText) findViewById(R.id.txtPassword);
+        ConfirmpasswordET = (EditText) findViewById(R.id.txtConfirmPassword);
+        dobET = (EditText) findViewById(R.id.txtdob);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupRegister);
-        maleRadioRegister = (RadioButton) findViewById(R.id.maleRadioRegister);
-        femaleRadioRegister = (RadioButton) findViewById(R.id.femaleRadioRegister);
+        maleRadioRegister = (RadioButton) findViewById(R.id.rbMale);
+        femaleRadioRegister = (RadioButton) findViewById(R.id.rbFemal);
 
         //help for the insertion
         if(maleRadioRegister.isChecked())
@@ -102,7 +97,45 @@ public class Register extends AppCompatActivity {
             //insertData();
             //intent to main menu
         }
+
+
+        //back to Login Page...
+
+        loginPage = (Button) findViewById(R.id.btnLoginPage);
+        loginPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToLoginPage(v);
+            }
+        });
+
+
+
+        //vaildating data before.. inserting data into database....
+
+        btndone = (Button) findViewById(R.id.btnDone);
+
+        btndone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                validPassword(passwordET.getText().toString(),ConfirmpasswordET.getText().toString());
+                validName(nameET.getText().toString());
+                validEmail(emailET.getText().toString(), ConfirmpasswordET.getText().toString());
+                insertData(v);
+                sendPassword(v);
+                try {
+                    validateDOB(dobET.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
+
+
 
     public void insertData(View view){
         final String url = "http://nashdomain.esy.es/insertNewUser.php";
@@ -110,7 +143,7 @@ public class Register extends AppCompatActivity {
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
         params.put("email", emailET.getText().toString());
-        params.put("name", nameET.getText().toString());
+        params.put("validName", nameET.getText().toString());
         params.put("password", passwordET.getText().toString());
         params.put("dob", dobET.getText().toString());
         params.put("gender", "Test");
@@ -299,15 +332,82 @@ public class Register extends AppCompatActivity {
     }
 
     public void goToMainMenuFromRegistration(View view){
-        Intent intent = new Intent(this, MainMenu.class);
+        Intent intent = new Intent(this, UserHomepage.class);
         startActivity(intent);
     }
 
     /*
-    Intent for MainActivity
+    Intent for login
      */
     public void changeToMainScreen(View view){
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, login.class);
         startActivity(intent);
     }
+
+    //go back to login Page
+    public void backToLoginPage(View view){
+
+        Intent intent = new Intent(this, login.class);
+        startActivity(intent);
+
+    }
+
+    //vaildaing users details
+    public boolean validPassword(String password, String comfirmPassword) {
+        if (password.toString().equals(comfirmPassword.toString()) && (!password.equals("") || !comfirmPassword.equals(""))) {
+            return true;
+        }
+        passwordET.setError("Please Enter same password");
+        return false;
+    }
+    public boolean validName(String x){
+
+        if(x.equals("")){
+            nameET.setError("Please Enter Name");
+            return false;
+        }
+
+        return true;
+    }
+    public boolean validEmail(String email, String comfirmEmail){
+        Pattern pattern   = Patterns.EMAIL_ADDRESS;
+
+        if(email.equals(comfirmEmail)){
+
+            return pattern.matcher(email).matches();
+        }
+        emailET.setError("Not Valid Email");
+        return false;
+
+    }
+    public boolean validateDOB(String date) throws ParseException {
+
+        DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+        Date dateofBirth = df.parse(date.toString());
+        Calendar dob = Calendar.getInstance();
+        dob.setTime(dateofBirth);
+
+        Calendar todayDate = Calendar.getInstance();
+        age = todayDate.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (todayDate.get(Calendar.DAY_OF_YEAR) <= dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        if(age >= 18){
+            System.out.println("Above 18: " + age);
+            return true;
+        } else {
+
+            dobET.setError("Please Enter Age Above 18..");
+            System.out.println("Above 18: " + age);
+            return false;
+
+
+        }
+
+    }
+
+
+
+
 }
