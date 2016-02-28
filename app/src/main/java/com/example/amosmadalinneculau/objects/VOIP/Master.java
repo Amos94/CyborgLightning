@@ -12,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.example.amosmadalinneculau.voicecallsip.R;
+import com.example.amosmadalinneculau.objects.R;
+
+import java.text.ParseException;
 
 /**
  * Created by Amos Madalin Neculau on 25/02/2016.
@@ -32,7 +34,12 @@ public class Master extends Activity {
             mSipManager = SipManager.newInstance(this);
         }
 
-        SipProfile.Builder builder = new SipProfile.Builder("","");
+        SipProfile.Builder builder = null;
+        try {
+            builder = new SipProfile.Builder("","");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         builder.setPassword("");
         mSipProfile = builder.build();
     }
@@ -41,25 +48,29 @@ public class Master extends Activity {
         Intent intent = new Intent();
         intent.setAction("android.SipDemo.INCOMING_CALL");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, Intent.FILL_IN_DATA);
-        mSipManager.open(mSipProfile, pendingIntent, null);
+        try {
+            mSipManager.open(mSipProfile, pendingIntent, null);
+        } catch (SipException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void registration(){
+    public void registration() throws SipException {
         mSipManager.setRegistrationListener(mSipProfile.getUriString(), new SipRegistrationListener() {
 
             public void onRegistering(String localProfileUri) {
-                updateStatus("Registering with SIP Server...");
+                //
             }
 
             public void onRegistrationDone(String localProfileUri, long expiryTime) {
-                updateStatus("Ready");
+                //
             }
 
             public void onRegistrationFailed(String localProfileUri, int errorCode,
                                              String errorMessage) {
-                updateStatus("Registration failed.  Please check settings.");
+               //
             }
-        }
+            });
     }
 
     public void closeLocalProfile() {
@@ -71,7 +82,7 @@ public class Master extends Activity {
                 mSipManager.close(mSipProfile.getUriString());
             }
         } catch (Exception ee) {
-            Log.d("WalkieTalkieActivity/onDestroy", "Failed to close local profile.", ee);
+            //Log.i("WalkieTalkieActivity/onDestroy Failed to close local profile.", ee.printStackTrace());
         }
     }
 

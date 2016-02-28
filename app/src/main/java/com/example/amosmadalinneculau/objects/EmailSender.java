@@ -1,9 +1,12 @@
+/*
 package com.example.amosmadalinneculau.objects;
 
 
+*/
 /**
  * Created by Amos Madalin Neculau on 13/02/2016.
- */
+ *//*
+
 
 import android.util.Log;
 
@@ -83,3 +86,4 @@ public class EmailSender {
     }
 
 }
+*/

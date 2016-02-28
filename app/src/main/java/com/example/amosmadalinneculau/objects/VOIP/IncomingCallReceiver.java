@@ -38,8 +38,8 @@ public class IncomingCallReceiver extends BroadcastReceiver {
             if(incomingCall.isMuted()) {
                 incomingCall.toggleMute();
             }
-            wtActivity.call = incomingCall;
-            wtActivity.updateStatus(incomingCall);
+            /*wtActivity.call = incomingCall;
+            wtActivity.updateStatus(incomingCall);*/
         } catch (Exception e) {
             if (incomingCall != null) {
                 incomingCall.close();

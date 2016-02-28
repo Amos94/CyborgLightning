@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.amosmadalinneculau.voicecallsip.R;
+import com.example.amosmadalinneculau.objects.R;
+
 
 /**
  * Created by Amos Madalin Neculau on 25/02/2016.
