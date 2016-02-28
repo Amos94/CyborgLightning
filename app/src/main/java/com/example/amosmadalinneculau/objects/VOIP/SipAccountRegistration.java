@@ -26,7 +26,7 @@ public class SipAccountRegistration extends Activity{
         wv = (WebView) findViewById(R.id.webView);
         doneBtn = (Button) findViewById(R.id.doneBtn);
 
-        wv.loadUrl("https://mdns.sipthor.net/register_sip_account.phtml");
+        wv.loadUrl("https://www.antisip.com/sip-antisip-com-register");
     }
 
     public void doneRegistration(View view){

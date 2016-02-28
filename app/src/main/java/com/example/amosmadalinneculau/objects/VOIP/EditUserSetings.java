@@ -46,5 +46,6 @@ public class EditUserSetings extends Activity{
         svr = server.getText().toString();
 
         ui = new UserInformation(usr,pwd,svr);
+        //ADD TO DATABASE
     }
 }
