@@ -1,6 +1,7 @@
 package com.example.amosmadalinneculau.objects.VOIP;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -158,6 +159,7 @@ public class Master extends Activity {
      * Closes out your local profile, freeing associated objects into memory
      * and unregistering your device from the server.
      */
+    @SuppressLint("LongLogTag")
     public void closeLocalProfile() {
         if (manager == null) {
             return;
@@ -174,6 +176,7 @@ public class Master extends Activity {
     /**
      * Make an outgoing call.
      */
+    @SuppressLint("LongLogTag")
     public void initiateCall() {
 
         updateStatus(sipAddress);

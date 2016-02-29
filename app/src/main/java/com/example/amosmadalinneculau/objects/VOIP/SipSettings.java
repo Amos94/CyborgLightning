@@ -3,6 +3,8 @@ package com.example.amosmadalinneculau.objects.VOIP;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+import com.example.amosmadalinneculau.objects.R;
+
 /**
  * Created by Amos Madalin Neculau on 29/02/2016.
  */
@@ -13,5 +15,6 @@ public class SipSettings extends PreferenceActivity {
         // Note that none of the preferences are actually defined here.
         // They're all in the XML file res/xml/preferences.xml.
         super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.layout.set_user_information);
     }
 }

@@ -22,7 +22,7 @@ public class EditUserSetings extends Activity{
     protected TextView server;
     protected Button done;
     protected Button back;
-    private UserInformation ui;
+    public UserInformation ui;
     private String usr;
     private String pwd;
     private String svr;
@@ -39,6 +39,10 @@ public class EditUserSetings extends Activity{
         back = (Button) findViewById(R.id.backBtn);
     }
 
+    public EditUserSetings(){
+        EditInformation();
+    }
+
     private void EditInformation(){
 
         usr = user.getText().toString();
@@ -47,5 +51,9 @@ public class EditUserSetings extends Activity{
 
         ui = new UserInformation(usr,pwd,svr);
         //ADD TO DATABASE
+    }
+
+    public UserInformation getUserInformation(){
+        return ui;
     }
 }
