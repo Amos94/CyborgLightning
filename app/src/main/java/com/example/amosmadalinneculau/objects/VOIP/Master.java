@@ -151,8 +151,6 @@ public class Master extends Activity {
             updateStatus("Connection Error.");
         } catch (SipException se) {
             updateStatus("Connection error.");
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 

@@ -31,7 +31,7 @@ public class IncomingCallReceiver extends BroadcastReceiver {
                 }
             };
             Master wtActivity = (Master) context;
-            incomingCall = wtActivity.mSipManager.takeAudioCall(intent, listener);
+            incomingCall = wtActivity.manager.takeAudioCall(intent, listener);
             incomingCall.answerCall(30);
             incomingCall.startAudio();
             incomingCall.setSpeakerMode(true);
