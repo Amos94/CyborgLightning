@@ -38,6 +38,7 @@ public class Register extends AppCompatActivity {
     private EditText nameET;
     private EditText passwordET;
     private EditText dobET;
+    private EditText locationET;
     private boolean isMale;
     private boolean isActivated;
     private RadioButton maleRadioRegister;
@@ -70,6 +71,7 @@ public class Register extends AppCompatActivity {
         nameET = (EditText) findViewById(R.id.nameRegister);
         passwordET = (EditText) findViewById(R.id.passwordRegister);
         dobET = (EditText) findViewById(R.id.dateRegister);
+        locationET = (EditText) findViewById(R.id.locationET);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupRegister);
         maleRadioRegister = (RadioButton) findViewById(R.id.maleRadioRegister);
@@ -114,6 +116,7 @@ public class Register extends AppCompatActivity {
         params.put("password", passwordET.getText().toString());
         params.put("dob", dobET.getText().toString());
         params.put("gender", "Test");
+        params.put("location", locationET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -241,7 +244,99 @@ public class Register extends AppCompatActivity {
         VolleyQueue.getInstance(this).addToRequestQueue(request);
     }
 
-    public void getFriends(View view){
+    public void insertInterest(View view){
+        final String url = "http://nashdomain.esy.es/insert_interest.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("interest", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void deleteInterest(View view){
+        final String url = "http://nashdomain.esy.es/delete_interest.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("interest", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void getFriends(View view) {
         final String url = "http://nashdomain.esy.es/get_friends.php";
 
         //parameters to post to php file
@@ -265,32 +360,31 @@ public class Register extends AppCompatActivity {
 
                             //clips the brackets off of the php array
                             String friends = jsonResponse.getString("friends");
-                            friends = friends.substring(1,friends.length()-1);
+                            friends = friends.substring(1, friends.length() - 1);
                             Log.d("Friends is", friends);
 
                             //clips the quotation marks off of emails
                             String[] test = friends.split(",");
-                            for(int i = 0; i < test.length; i++){
-                                test[i] = test[i].substring(1,test[i].length()-1);
+                            for (int i = 0; i < test.length; i++) {
+                                test[i] = test[i].substring(1, test[i].length() - 1);
                             }
-                            Log.d("Test is", test[0]+" "+test[1]);
+                            Log.d("Test is", test[0] + " " + test[1]);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.d("JSON failed to parse: ", response);
                         }
                     }
-                }, new Response.ErrorListener(){
+                }, new Response.ErrorListener() {
 
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
                 Log.d("VolleyError at url ", url);
             }
         }
-        ){
+        ) {
             //Parameters inserted
             @Override
-            protected Map<String, String> getParams()
-            {
+            protected Map<String, String> getParams() {
                 return params;
             }
         };
