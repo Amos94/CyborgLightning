@@ -106,6 +106,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //TODO change server address and /url.php's into res/values/strings.xml
     public void insertData(View view){
         final String url = "http://nashdomain.esy.es/insertNewUser.php";
 
@@ -199,7 +200,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void insertFriend(View view){
-        final String url = "http://nashdomain.esy.es/insert_friend.php";
+        final String url = "http://nashdomain.esy.es/friends_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -229,99 +230,7 @@ public class Register extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error){
-                Log.d("VolleyError at url ", url);
-            }
-        }
-        ){
-            //Parameters inserted
-            @Override
-            protected Map<String, String> getParams()
-            {
-                return params;
-            }
-        };
-        //put the request in the static queue
-        VolleyQueue.getInstance(this).addToRequestQueue(request);
-    }
-
-    public void insertInterest(View view){
-        final String url = "http://nashdomain.esy.es/insert_interest.php";
-
-        //parameters to post to php file
-        final Map<String, String> params = new HashMap<String, String>();
-        params.put("email", emailET.getText().toString());
-        params.put("interest", nameET.getText().toString());
-
-        //request to insert the user into the mysql database using php
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-
-                            boolean success = jsonResponse.getString("success").equals("1");
-                            Log.d("Success", String.valueOf(success));
-
-                            String message = jsonResponse.getString("message");
-                            Log.d("Message is", message);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d("JSON failed to parse: ", response);
-                        }
-                    }
-                }, new Response.ErrorListener(){
-
-            @Override
-            public void onErrorResponse(VolleyError error){
-                Log.d("VolleyError at url ", url);
-            }
-        }
-        ){
-            //Parameters inserted
-            @Override
-            protected Map<String, String> getParams()
-            {
-                return params;
-            }
-        };
-        //put the request in the static queue
-        VolleyQueue.getInstance(this).addToRequestQueue(request);
-    }
-
-    public void deleteInterest(View view){
-        final String url = "http://nashdomain.esy.es/delete_interest.php";
-
-        //parameters to post to php file
-        final Map<String, String> params = new HashMap<String, String>();
-        params.put("email", emailET.getText().toString());
-        params.put("interest", nameET.getText().toString());
-
-        //request to insert the user into the mysql database using php
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-
-                            boolean success = jsonResponse.getString("success").equals("1");
-                            Log.d("Success", String.valueOf(success));
-
-                            String message = jsonResponse.getString("message");
-                            Log.d("Message is", message);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.d("JSON failed to parse: ", response);
-                        }
-                    }
-                }, new Response.ErrorListener(){
-
-            @Override
-            public void onErrorResponse(VolleyError error){
-                Log.d("VolleyError at url ", url);
+                Log.d("Volley onErrorResponse", error.toString());
             }
         }
         ){
@@ -337,7 +246,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void getFriends(View view) {
-        final String url = "http://nashdomain.esy.es/get_friends.php";
+        final String url = "http://nashdomain.esy.es/friends_get.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -385,6 +294,416 @@ public class Register extends AppCompatActivity {
             //Parameters inserted
             @Override
             protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void deleteFriend(View view){
+        final String url = "http://nashdomain.esy.es/friends_delete.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("emailA", emailET.getText().toString());
+        params.put("emailB", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("Volley onErrorResponse", error.toString());
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void insertInterest(View view){
+        final String url = "http://nashdomain.esy.es/interest_insert.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("interest", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void deleteInterest(View view){
+        final String url = "http://nashdomain.esy.es/interest_delete.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("email", emailET.getText().toString());
+        params.put("interest", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void getUserInterests(View view) {
+        final String url = "http://nashdomain.esy.es/interests_get_user.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<>();
+        params.put("email", emailET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+
+                            //clips the brackets off of the php array
+                            String interests = jsonResponse.getString("interests");
+                            interests = interests.substring(1, interests.length() - 1);
+                            Log.d("interests are", interests);
+
+                            //clips the quotation marks off of emails
+                            String[] test = interests.split(",");
+                            for (int i = 0; i < test.length; i++) {
+                                test[i] = test[i].substring(1, test[i].length() - 1);
+                            }
+                            Log.d("Test is", test[0] + " " + test[1]);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ) {
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void getMatchedInterests(View view) {
+        final String url = "http://nashdomain.esy.es/interests_get_matched.php";
+
+        //TODO post from textviews instead of static post
+        String post = "Anime,Books";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<>();
+        params.put("interests", post);
+        params.put("userEmail", emailET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+
+                            String users = jsonResponse.getString("users");
+                            Log.d("Users are", users);
+
+                            //clips the brackets off of the php array
+                            String interests = jsonResponse.getString("interests");
+                            interests = interests.substring(1, interests.length() - 1);
+                            Log.d("interests are", interests);
+
+                            //clips the quotation marks off of emails
+                            String[] test = interests.split(",");
+                            for (int i = 0; i < test.length; i++) {
+                                test[i] = test[i].substring(1, test[i].length() - 1);
+                            }
+                            Log.d("Test is", test[0] + " " + test[1]);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Volley onErrorResponse", url);
+            }
+        }
+        ) {
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void getUsersInLocation(View view) {
+        final String url = "http://nashdomain.esy.es/location_users.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<>();
+        params.put("email", emailET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+
+                            String users = jsonResponse.getString("users");
+                            Log.d("Users are", users);
+
+                            //clips the brackets off of the php array
+                            String interests = jsonResponse.getString("interests");
+                            interests = interests.substring(1, interests.length() - 1);
+                            Log.d("interests are", interests);
+
+                            //clips the quotation marks off of emails
+                            String[] test = interests.split(",");
+                            for (int i = 0; i < test.length; i++) {
+                                test[i] = test[i].substring(1, test[i].length() - 1);
+                            }
+                            Log.d("Test is", test[0] + " " + test[1]);
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Volley onErrorResponse", url);
+            }
+        }
+        ) {
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams() {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void blockInsert(View view){
+        final String url = "http://nashdomain.esy.es/blocked_user_insert.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("emailA", emailET.getText().toString());
+        params.put("emailB", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
+                return params;
+            }
+        };
+        //put the request in the static queue
+        VolleyQueue.getInstance(this).addToRequestQueue(request);
+    }
+
+    public void blockDelete(View view){
+        final String url = "http://nashdomain.esy.es/blocked_user_delete.php";
+
+        //parameters to post to php file
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("emailA", emailET.getText().toString());
+        params.put("emailB", nameET.getText().toString());
+
+        //request to insert the user into the mysql database using php
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+
+                            boolean success = jsonResponse.getString("success").equals("1");
+                            Log.d("Success", String.valueOf(success));
+
+                            String message = jsonResponse.getString("message");
+                            Log.d("Message is", message);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.d("JSON failed to parse: ", response);
+                        }
+                    }
+                }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.d("VolleyError at url ", url);
+            }
+        }
+        ){
+            //Parameters inserted
+            @Override
+            protected Map<String, String> getParams()
+            {
                 return params;
             }
         };
