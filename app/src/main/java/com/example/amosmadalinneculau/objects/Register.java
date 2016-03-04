@@ -107,8 +107,8 @@ public class Register extends AppCompatActivity {
     }
 
     //TODO change server address and /url.php's into res/values/strings.xml
-    public void insertData(View view){
-        final String url = "http://nashdomain.esy.es/insertNewUser.php";
+    public void insertUser(View view){
+        final String url = "http://nashdomain.esy.es/users_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -158,11 +158,11 @@ public class Register extends AppCompatActivity {
     }
 
     public void sendPassword(View view) {
-        final String url = "http://nashdomain.esy.es/get_user.php";
+        final String url = "http://nashdomain.esy.es/sendPassword.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
 
         //request to get the user from the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -204,8 +204,8 @@ public class Register extends AppCompatActivity {
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("emailA", emailET.getText().toString());
-        params.put("emailB", nameET.getText().toString());
+        params.put("userIDA", emailET.getText().toString());
+        params.put("userIDB", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -250,7 +250,7 @@ public class Register extends AppCompatActivity {
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -306,8 +306,8 @@ public class Register extends AppCompatActivity {
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("emailA", emailET.getText().toString());
-        params.put("emailB", nameET.getText().toString());
+        params.put("userIDA", emailET.getText().toString());
+        params.put("userIDB", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -348,11 +348,11 @@ public class Register extends AppCompatActivity {
     }
 
     public void insertInterest(View view){
-        final String url = "http://nashdomain.esy.es/interest_insert.php";
+        final String url = "http://nashdomain.esy.es/interests_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
         params.put("interest", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
@@ -394,11 +394,11 @@ public class Register extends AppCompatActivity {
     }
 
     public void deleteInterest(View view){
-        final String url = "http://nashdomain.esy.es/interest_delete.php";
+        final String url = "http://nashdomain.esy.es/interests_delete.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
         params.put("interest", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
@@ -444,7 +444,7 @@ public class Register extends AppCompatActivity {
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -504,7 +504,7 @@ public class Register extends AppCompatActivity {
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
         params.put("interests", post);
-        params.put("userEmail", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -560,11 +560,11 @@ public class Register extends AppCompatActivity {
     }
 
     public void getUsersInLocation(View view) {
-        final String url = "http://nashdomain.esy.es/location_users.php";
+        final String url = "http://nashdomain.esy.es/users_location.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
-        params.put("email", emailET.getText().toString());
+        params.put("userID", emailET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -620,12 +620,12 @@ public class Register extends AppCompatActivity {
     }
 
     public void blockInsert(View view){
-        final String url = "http://nashdomain.esy.es/blocked_user_insert.php";
+        final String url = "http://nashdomain.esy.es/blocked_users_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("emailA", emailET.getText().toString());
-        params.put("emailB", nameET.getText().toString());
+        params.put("userIDA", emailET.getText().toString());
+        params.put("userIDB", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
@@ -666,12 +666,12 @@ public class Register extends AppCompatActivity {
     }
 
     public void blockDelete(View view){
-        final String url = "http://nashdomain.esy.es/blocked_user_delete.php";
+        final String url = "http://nashdomain.esy.es/blocked_users_delete.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
-        params.put("emailA", emailET.getText().toString());
-        params.put("emailB", nameET.getText().toString());
+        params.put("userIDA", emailET.getText().toString());
+        params.put("userIDB", nameET.getText().toString());
 
         //request to insert the user into the mysql database using php
         StringRequest request = new StringRequest(Request.Method.POST, url,
