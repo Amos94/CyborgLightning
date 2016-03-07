@@ -79,11 +79,13 @@ public class Master extends Activity implements View.OnTouchListener{
         filter.addAction("android.SipDemo.INCOMING_CALL");
         callReceiver = new IncomingCallReceiver();
         this.registerReceiver(callReceiver, filter);
+
+
         chronometer = (Chronometer) findViewById(R.id.chronometer);
 
         // "Push to talk" can be a serious pain when the screen keeps turning off.
         // Let's prevent that.
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        /*getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);*/
 
         initializeManager();
         initializeLocalProfile();
@@ -195,7 +197,7 @@ public class Master extends Activity implements View.OnTouchListener{
                 manager.close(me.getUriString());
             }
         } catch (Exception ee) {
-            Log.d("WalkieTalkieActivity/onDestroy", "Failed to close local profile.", ee);
+            Log.d("onDestroy", "Failed to close local profile.", ee);
         }
     }
 
@@ -249,12 +251,12 @@ public class Master extends Activity implements View.OnTouchListener{
 
         }
         catch (Exception e) {
-            Log.i("WalkieTalkieActivity/InitiateCall", "Error when trying to close manager.", e);
+            Log.i("InitiateCall", "Error when trying to close manager.", e);
             if (me != null) {
                 try {
                     manager.close(me.getUriString());
                 } catch (Exception ee) {
-                    Log.i("WalkieTalkieActivity/InitiateCall",
+                    Log.i("InitiateCall",
                             "Error when trying to close manager.", ee);
                     ee.printStackTrace();
                 }
