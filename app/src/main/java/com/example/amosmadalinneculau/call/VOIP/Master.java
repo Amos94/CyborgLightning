@@ -99,7 +99,7 @@ public class Master extends Activity implements View.OnTouchListener{
         initializeManager();
     }
 
-    /*
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -113,7 +113,7 @@ public class Master extends Activity implements View.OnTouchListener{
             this.unregisterReceiver(callReceiver);
         }
     }
-    */
+
     public void initializeManager() {
         if(manager == null) {
             manager = SipManager.newInstance(this);
@@ -219,7 +219,7 @@ public class Master extends Activity implements View.OnTouchListener{
                 @Override
                 public void onCallEstablished(SipAudioCall call) {
                     call.startAudio();
-                    call.toggleMute();
+
                     updateStatus(call);
 
                     chronometer.start();
