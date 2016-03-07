@@ -106,9 +106,8 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //TODO change server address and /url.php's into res/values/strings.xml
     public void insertUser(View view){
-        final String url = "http://nashdomain.esy.es/users_insert.php";
+        final String url = getString(R.string.server_url)+"users_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -158,7 +157,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void sendPassword(View view) {
-        final String url = "http://nashdomain.esy.es/sendPassword.php";
+        final String url = getString(R.string.server_url)+"sendPassword.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
@@ -200,7 +199,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void insertFriend(View view){
-        final String url = "http://nashdomain.esy.es/friends_insert.php";
+        final String url = getString(R.string.server_url)+"friends_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -246,7 +245,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void getFriends(View view) {
-        final String url = "http://nashdomain.esy.es/friends_get.php";
+        final String url = getString(R.string.server_url)+"friends_get.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -302,7 +301,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void deleteFriend(View view){
-        final String url = "http://nashdomain.esy.es/friends_delete.php";
+        final String url = getString(R.string.server_url)+"friends_delete.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -348,7 +347,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void insertInterest(View view){
-        final String url = "http://nashdomain.esy.es/interests_insert.php";
+        final String url = getString(R.string.server_url)+"interests_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -394,7 +393,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void deleteInterest(View view){
-        final String url = "http://nashdomain.esy.es/interests_delete.php";
+        final String url = getString(R.string.server_url)+"interests_delete.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -440,7 +439,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void getUserInterests(View view) {
-        final String url = "http://nashdomain.esy.es/interests_get_user.php";
+        final String url = getString(R.string.server_url)+"interests_get_user.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
@@ -496,7 +495,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void getMatchedInterests(View view) {
-        final String url = "http://nashdomain.esy.es/interests_get_matched.php";
+        final String url = getString(R.string.server_url)+"interests_get_matched.php";
 
         //TODO post from textviews instead of static post
         String post = "Anime,Books";
@@ -560,7 +559,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void getUsersInLocation(View view) {
-        final String url = "http://nashdomain.esy.es/users_location.php";
+        final String url = getString(R.string.server_url)+"users_location.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<>();
@@ -620,7 +619,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void blockInsert(View view){
-        final String url = "http://nashdomain.esy.es/blocked_users_insert.php";
+        final String url = getString(R.string.server_url)+"blocked_users_insert.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();
@@ -666,7 +665,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void blockDelete(View view){
-        final String url = "http://nashdomain.esy.es/blocked_users_delete.php";
+        final String url = getString(R.string.server_url)+"blocked_users_delete.php";
 
         //parameters to post to php file
         final Map<String, String> params = new HashMap<String, String>();

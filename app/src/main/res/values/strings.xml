@@ -5,4 +5,5 @@
     <string name="title_activity_choose_interests">ChooseInterests</string>
     <string name="title_activity_main_menu">MainMenu</string>
     <string name="title_activity_chat_room">ChatRoom</string>
+    <string name="server_url">http://nashdomain.esy.es/</string>
 </resources>
