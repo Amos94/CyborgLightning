@@ -12,10 +12,6 @@
     tools:context="com.example.amosmadalinneculau.objects.Register"
     tools:showIn="@layout/activity_register">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -133,66 +129,61 @@
                 android:layout_gravity="center_horizontal" />
         </RadioGroup>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="55dp"
-            android:id="@+id/linearLayout2">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:id="@+id/button"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="#ededed"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="5"
-                android:onClick="changeToMainScreen" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Register"
-                android:id="@+id/button2"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="#ededed"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="5"
-                android:clickable="false"
-                android:onClick="insertData"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clear"
-                android:id="@+id/button3"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="#ededed"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="5"
-                android:onClick="getFriends"/>
-        </LinearLayout>
     </LinearLayout>
-    </ScrollView>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="55dp"
+        android:id="@+id/linearLayout2">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:id="@+id/button"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="#ededed"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="5"
+            android:onClick="changeToMainScreen" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:id="@+id/button2"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="#ededed"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="5" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/button3"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:background="#ededed"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="5" />
+    </LinearLayout>
 
 </RelativeLayout>
